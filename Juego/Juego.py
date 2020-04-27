@@ -1,77 +1,82 @@
-class juego():
-    def _init_(self,color):
-        if color == 'Negro':
-            self.usuario='J1'
-            self.bots='J2'
-            self.tablero=[['-', 'J1', '-', 'J1', '-', 'J1', '-', ''],
-               ['J1', '-', 'J1', '-', 'J1', '-', 'n', '-'],
-               ['-', 'J1', '-', 'J1', '-', 'J1', '-', 'J1'],
-               ['-', '-', '-', '-', '-', '-', '-', '-'],
-               ['-', '-', '-', '-', '-', '-', '-', '-'],
-               ['J2', '-', 'J2', '-', 'J2', '-', 'J2', '-'],
-               ['-', 'J2', '-', 'J2', '-', 'J2', '-', 'J2'],
-               ['J2', '-', 'J2', '-', 'J2', '-', 'J2', '-']]
-        else:
-            self.usuario='J2'
-            self.bots='J1'
-            self.tablero=[['-', 'J2', '-', 'J2', '-', 'J1', '-', ''],
-               ['J2', '-', 'J2', '-', 'J2', '-', 'J2', '-'],
-               ['-', 'J2', '-', 'J2', '-', 'J2', '-', 'J2'],
-               ['-', '-', '-', '-', '-', '-', '-', '-'],
-               ['-', '-', '-', '-', '-', '-', '-', '-'],
-               ['J1', '-', 'J1', '-', 'J1', '-', 'J1', '-'],
-               ['-', 'J1', '-', 'J1', '-', 'J1', '-', 'J1'],
-               ['J1', '-', 'J1', '-', 'J1', '-', 'J1', '-']]
-    def output(self):
-        letra =('A','B','C','D','E','F','G','H')
-        numero =('1','2','3','4','5','6','7','8')
-        for index, i in enumerate(self.tablero):
-            print(f'{numero[index]}'+'|'+'|'+'|'.join(i)+'|'+f'{numero[index]}')
-        print('   '+ ' '.join(letra))
-    def ccoordenadas(self,coordenadas):
-        Dletra={'A':0,'B':1,'C':2,'D':3,'E':4,'F':5,'G':6,'H':7}
-        Dnumero={'1':0,'2':1,'3':2,'4':3,'5':4,'6':5,'7':6,'8':7}
-        x=Dletra[coordenadas[0]]
-        y=Dnumero[coordenadas[1]]
-        ccoordenadas=(x,y)
-        print(' coordernada de l',ccoordenadas)
-        return ccoordenadas
-    def movimiento(self,v1,v2):
-        chequeocoordenadas= self.ccoordenadas(v1)
-        movi_dest=self.ccoordenadas(v2)
-        vacio=self.vacio(movi_dest)
-        smovimiento=self.smovimiento(chequeocoordenadas,movi_dest)
-    def chequeopieza(self,coorde):
-        piezacoordenada=self.juego[coord[0]][coord[1]]
-        if self.usuario ==  piezacoordenada :
-            resultado = True
-        elif piezacoordenada == ' ':
-             print('No hay ninguna pieza')
-             resultado = False
-        else:
-             print('No es tu pieza mueve otra')
-             resultado=False
-        return resultado
-    def reglas(self,v1,v2):
-        if self.juego[v1[0]][v1[1]] == self.bots:
-            if v2[0] == v1[0]+1 and (v2[1]==v2[1]+1 or v2[1]==v1[1]-1):
-               return True
-        elif self.juego[v1[0]][v1[1]]==self.bots:
-            if v2[0] == v1[0]+1 and (v2[1]==v2[1]+1 or v2[1]==v1[1]-1):
-               return True
+class juego:
+    
+    def __init__(self,coordenadas,color,deck):
+        self.coordenadas=coordenadas
+        self.color = color 
+        self.deck=deck
+    def paso(self,movimiento,condicionvalida1,condicionvalida2):
+        destinacioncorrecta = (movimiento == condicionvalida1 or movimiento==condicionvalida2)
+        if self.deck[self.coordenadas[0]][self.coordenadas[1]] == self.color:
+            if destinacioncorrecta :
+                result = True
             else:
-                 print('No es posible')
-                 return False
-    def Chequeo(self):
-         juegador=[]
-         botsJ2=[]
-         VacioJ2=[]
-         for x in range(len(self.tablero)):
-            for y in range(self.tablero[x]):
-               if self.tablero[x][y]== self.bots:
-                   juegador.append((x,y))
-               if self.tablero[x][y]== self.bots:
-                        botsJ2.append((x,y))
-               if self.tablero[x][y]== '  ':
-                        vacioJ2.append((x,y))
-            return juegador,botsJ2,VacioJ2
+                result = False
+            return result
+        else:
+           print('campo vacio')
+           result = False
+           return result
+    def Listanada(self):
+        nada=[]
+        for x in range(len(self.tablero)):
+            for y in range(len(self.tablero[x])):
+                if self.deck[x][y] == ' ':
+                    nada.append((x,y))
+        return nada
+
+    def EstaVacio(self,movimiento):
+        if movimiento in self.Listanada():
+            EstaVacio = True
+        else:
+            print('Campo esta vacio')
+            EstaVacio = False
+        return EstaVacio
+    def NecesitaAtaque(self,DamasEnemigo):
+        EnemyArmy=[]
+        for x in range(len(self.deck)):
+            for y in range(len(self.tablero[x])):
+                if self.deck[x][y] != '  ' and self.deck[x][y] != self.color:
+                    EnemyArmy.append((x,y))
+        print('Enemigo',EnemyArmy)
+        PrimerChequeo=[]
+        SegundoChequeo=[]
+        for i in DamasEnemigo:
+            for j in EnemyArmy:
+                if j == (i[0]+1,i[1]+1) or j == (i[0]-1,i[1]-1) or j==(i[0]+1,i[1]-1) or j==(i[0] -1, i[1] +1):
+                    PrimerChequeo.append(j)
+        for i in PrimerChequeo:
+            for A in self.Listanada():
+                    if A == (j[0]+1,j[1]+1) or A == (j[0]-1,j[1]-1) or A ==(j[0]+1,j[1]-1) or A==(j[0] -1, j[1] +1):
+                        SegundoChequeo.append(A)
+        if not SegundoChequeo:
+            result = False
+        elif SegundoChequeo:
+            print('Necesita Ataque')
+            result = True
+        else:
+            result=False
+        return result
+    def ataqueEnemigo(self):
+        Objetivo_1= self.coordenadas[0]-1,self.coordenadas[1]-1
+        Objetivo_2= self.coordenadas[0]-1,self.coordenadas[1]+1
+        Objetivo_3= self.coordenadas[0]+1,self.coordenadas[1]-1
+        Objetivo_4= self.coordenadas[0]+1,self.coordenadas[1]+1
+       
+        PasosObjetivo_1= self.coordenadas[0]-2,self.coordenadas[1]-2
+        PasosObjetivo_2= self.coordenadas[0]-2,self.coordenadas[1]+2
+        PasosObjetivo_3= self.coordenadas[0]+2,self.coordenadas[1]-2
+        PasosObjetivo_4= self.coordenadas[0]+2,self.coordenadas[1]+2
+        dict_attack={PasosObjetivo_1:Objetivo_1,PasosObjetivo_2:Objetivo_2,PasosObjetivo_3:Objetivo_3,PasosObjetivo_4:Objetivo_4}
+        return dict_attack
+    def ataque(self,movimiento):
+        dict_attack=self.ataqueEnemigo()
+        if movimiento in dict_attack and self.EstaVacio(movimiento):
+            Objectivo = dict_attack[movimiento]
+            if self.deck[Objectivo[0]][Objectivo[1]] !=self.color and self.deck[Objectivo[0]][Objectivo[1]] != ' ':
+                self.deck[movimiento[0][movimiento[1]]] = self.tablero[self.coordenadas[0]][self.coordenadas[1]]
+                self.deck[self.coordenadas[0]][self.coordenadas[1]]
+                self.deck[movimiento[0]][self.coordenadas[1]] = ' '
+                self.deck[Objectivo[0]][Objectivo[1]]
+                return self.deck
+            else:
+                print('Pasos incorrecto haga otro paso')
