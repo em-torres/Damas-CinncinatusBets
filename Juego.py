@@ -1,5 +1,4 @@
 class juego:
-
     def __init__(self, coordenadas, color, deck):
         self.coordenadas = coordenadas
         self.color = color
@@ -20,8 +19,8 @@ class juego:
 
     def Listanada(self):
         nada = []
-        for x in range(len(self.tablero)):
-            for y in range(len(self.tablero[x])):
+        for x in range(len(self.deck.deck)):
+            for y in range(len(self.deck.deck[x])):
                 if self.deck[x][y] == ' ':
                     nada.append((x, y))
         return nada

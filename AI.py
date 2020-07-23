@@ -5,7 +5,7 @@ class Player:
     def __init__(self, color, deck):
         self.color = color
         self.enemigo = []
-        self.paso = ()
+        self.paso = []
         self.deck = deck
 
     def jugador_enemigo(self):
@@ -37,13 +37,13 @@ class Bot(Player):
         condicion2 = (damas_coordenadas[0] - 1, damas_coordenadas[1] - 1)
         return condicion1, condicion2
 
-    def paso(self):
+    def paso_jugador(self):
         nada = []
         botdamas = []
         botpasos = []
-        for x in range(len(self.deck)):
-            for y in range(len(self.deck[x])):
-                if self.deck[x][y] == ' ':
+        for x in range(len(self.deck.deck)):
+            for y in range(len(self.deck.deck[x])):
+                if self.deck.deck[x][y] == ' ':
                     nada.append((x, y))
         for i in self.enemigo:
             for ef in nada:
@@ -55,10 +55,10 @@ class Bot(Player):
         print('Bot decision correcta', unicodamas)
         botpasos = random.choice(unicodamas)
         print('Bot Damas pasos ', botpasos)
-        while True:
-            botpasos = random.choice(unicodamas)
-            print('Bot decision pasos 1', botpasos)
-            if botpasos in self.paso(botpasos):
-                break
-        print('Confirmacion de bot', botpasos)
-        return botpasos, botdamas
+        # while True:
+        #     botpasos = random.choice(unicodamas)
+        #     print('Bot decision pasos 1', botpasos)
+        #     if botpasos in self.paso_jugador():
+        #         break
+        # print('Confirmacion de bot', botpasos)
+        return [botpasos, botdamas]
