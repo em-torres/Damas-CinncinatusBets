@@ -17,13 +17,13 @@ class Player:
 
 
 class Usuario(Player):
-    def coordenadas(self, UsuarioCoordinadas):
+    def coordenadas(self, user_coordinates):
         letra = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7}
         numero = {'1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7}
-        x = letra[UsuarioCoordinadas[0]]
-        y = numero[UsuarioCoordinadas[1]]
-        ccordinadas = (x, y)
-        return ccordinadas
+        x = letra[user_coordinates[0]]
+        y = numero[user_coordinates[1]]
+        coordenadas = (x, y)
+        return coordenadas
 
     def validacion(self, damas_coordenadas):
         condicion1 = (damas_coordenadas[0] + 1, damas_coordenadas[1] + 1)

@@ -13,7 +13,7 @@ class juego:
                 result = False
             return result
         else:
-            print('campo vacio')
+            print('Campo Vacio')
             result = False
             return result
 
