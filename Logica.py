@@ -1,47 +1,47 @@
-from Deck import Deck as Decker
-from Juego import juego as Game
+from Tablero import Deck as Decker
+from Juego import Juego as Game
 
 import AI
 import random
 
 
 def game_init():
-    color      = select_user()
-    my_deck    = Decker(color)
+    color = select_user()
+    my_deck = Decker(color)
 
     while True:
-        print_game_header()         # Prints the game Header
-        my_deck.output()            # Prints the actual Deck
+        print_game_header()  # Prints the game Header
+        my_deck.deck_output()  # Prints the actual Deck
         while True:
             usuario = AI.Usuario(color, my_deck)
-            usuario.jugador_enemigo()
+            usuario.JEnemigo()
             try:
-                usercoordsPara = usuario.coordenadas(input('Entra la coordenada de la dama:'))
-                usercoordsto = usuario.coordenadas(input('Entra los movimientos coordenadas:'))
+                usercoordsPara = usuario.ccordinadas(input('Entra la coordenada de la dama:'))
+                usercoordsto = usuario.ccordinadas(input('Entra los movimientos coordenadas:'))
             except KeyError or IndexError:
                 continue
 
-            user_pasos_validacion_1 = usuario.paso.append(usercoordsPara[0])
-            user_pasos_validacion_2 = usuario.paso.append(usercoordsPara[1])
+            user_pasos_validacion_1 = usuario.validacion(usercoordsPara)[0]
+            user_pasos_validacion_2 = usuario.validacion(usercoordsPara)[1]
 
-            # user_pasos_validacion_1 = usuario.paso(usercoordsPara[0])
-            # user_pasos_validacion_2 = usuario.paso(usercoordsPara[1])
+            # user_pasos_validacion_1 = usuario.paso.append(usercoordsPara[0])
+            # user_pasos_validacion_2 = usuario.paso.append(usercoordsPara[1])
             usuario_damas = Game(usercoordsPara, color, Decker)
 
-            if usuario_damas.ataqueEnemigo():
-                usercoordsPara = usuario.coordenadas(input('Entra la coordenada de la dama:'))
-                usercoordsto = usuario.coordenadas(input('Entra los movimientos coordenadas:'))
-                usuario_damas.ataque(usercoordsto)
+            if usuario_damas.attack_targets():
+                usercoordsPara = usuario.ccordinadas(input('Entra la coordenada de la dama:'))
+                usercoordsto = usuario.ccordinadas(input('Entra los movimientos coordenadas:'))
+                usuario_damas.attack(usercoordsto)
                 break
-            user_paso = usuario_damas.paso(usercoordsto, user_step_validation_1, user_step_validation_2)
+            user_paso = usuario_damas.paso(usercoordsto, user_pasos_validacion_1, user_pasos_validacion_2)
             if user_paso:
                 Decker.update(usercoordsPara, usercoordsto)
             else:
                 print('Usuario input-Incorrecto!!')
 
         bot = AI.Bot(color, my_deck)
-        bot.jugador_enemigo()
-        bot_pasos = bot.paso_jugador()
+        usuario.JEnemigo()
+        bot_pasos = list(bot._paso())
         bot_damas_choice = bot_pasos[0]
         bot_movimiento = bot_pasos[1]
 

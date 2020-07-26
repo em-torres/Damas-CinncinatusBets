@@ -1,6 +1,6 @@
 class Deck:
     def __init__(self, color):
-        if color == "x":
+        if color == 'x':
             self.deck = [[' ', 'o', ' ', 'o', ' ', 'o', ' ', 'o'],
                          ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
                          [' ', 'o', ' ', 'o', ' ', 'o', ' ', 'o'],
@@ -9,6 +9,7 @@ class Deck:
                          ['x', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
                          [' ', 'x', ' ', 'x', ' ', 'x', ' ', 'x'],
                          ['x', ' ', 'x', ' ', 'x', ' ', 'x', ' ']]
+
         else:
             self.deck = [[' ', 'x', ' ', 'x', ' ', 'x', ' ', 'x'],
                          ['x', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
@@ -19,15 +20,23 @@ class Deck:
                          [' ', 'o', ' ', 'o', ' ', 'o', ' ', 'o'],
                          ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' ']]
 
-    def output(self):
-        letra = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
-        numero = ('1', '2', '3', '4', '5', '6', '7', '8')
-        print('    ' + ' '.join(letra))
-        for index, i in enumerate(self.deck):
-            print(f'{numero[index]}  ' + '|' + '|'.join(i) + '|' + f'  {numero[index]}')
-        print('    ' + ' '.join(letra))
+    def deck_output(self):
+        """
+        metodo para ver tablero
+        """
+        letter = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
+        number = ('1', '2', '3', '4', '5', '6', '7', '8')
+        print('    ' + ' '.join(letter))
 
-    def update(self, coords, movimiento, target=None):
-        self.deck[movimiento[0]][movimiento[1]] = self.deck[coords[0]][coords[1]]
+        for index, i in enumerate(self.deck):
+            print(f'{number[index]}  ' + '|' + '|'.join(i) + '|' + f'  {number[index]}')
+
+        print('    ' + ' '.join(letter))
+
+    def deck_update(self, coords, move_dest, target=None):
+        """
+        Metodo para reescribir el tabler
+        """
+        self.deck[move_dest[0]][move_dest[1]] = self.deck[coords[0]][coords[1]]
         self.deck[coords[0]][coords[1]] = ' '
         return self.deck
